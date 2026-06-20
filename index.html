@@ -112,7 +112,7 @@
                         <div>
                             <div class="flex justify-between text-sm mb-1">
                                 <span class="text-gray-600">Komisi & Layanan</span>
-                                <span id="val-admin" class="font-semibold">Rp 0</span>
+                                <span id="val-admin" class="font-semibold text-red-500">Rp 0</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2">
                                 <div id="bar-admin" class="bg-indigo-500 h-2 rounded-full" style="width: 0%"></div>
@@ -121,7 +121,7 @@
                         <div>
                             <div class="flex justify-between text-sm mb-1">
                                 <span class="text-gray-600">Afiliasi, GMV Max, & LIVE</span>
-                                <span id="val-ads" class="font-semibold">Rp 0</span>
+                                <span id="val-ads" class="font-semibold text-red-500">Rp 0</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2">
                                 <div id="bar-ads" class="bg-blue-400 h-2 rounded-full" style="width: 0%"></div>
@@ -130,7 +130,7 @@
                         <div>
                             <div class="flex justify-between text-sm mb-1">
                                 <span class="text-gray-600">Ongkir & Logistik</span>
-                                <span id="val-shipping" class="font-semibold">Rp 0</span>
+                                <span id="val-shipping" class="font-semibold text-red-500">Rp 0</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2">
                                 <div id="bar-shipping" class="bg-red-400 h-2 rounded-full" style="width: 0%"></div>
@@ -324,7 +324,7 @@
                         </div>
                         <div class="flex justify-between items-center" id="row-diskon-penjual">
                             <span>Diskon penjual</span>
-                            <span id="modal-diskon-penjual" class="font-medium text-gray-500">-Rp 0</span>
+                            <span id="modal-diskon-penjual" class="font-medium">-Rp 0</span>
                         </div>
                         <div class="flex justify-between items-center" id="row-biaya-produk-horison">
                             <span>Biaya produk sesuai jarak dari Program Horison+</span>
@@ -332,7 +332,7 @@
                         </div>
                         <div class="flex justify-between items-center" id="row-subtotal-refund-sblm">
                             <span>Subtotal pengembalian dana sebelum diskon penjual</span>
-                            <span id="modal-subtotal-refund-sblm" class="font-medium text-gray-500">-Rp 0</span>
+                            <span id="modal-subtotal-refund-sblm" class="font-medium">-Rp 0</span>
                         </div>
                         <div class="flex justify-between items-center" id="row-refund-diskon-penjual">
                             <span>Pengembalian dana diskon penjual</span>
@@ -350,7 +350,7 @@
                             Total Biaya 
                             <span id="pct-total-biaya" class="ml-2 text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full border border-red-200">0%</span>
                         </span>
-                        <span id="modal-total-biaya" class="text-red-700">-Rp 0</span>
+                        <span id="modal-total-biaya" class="font-bold">-Rp 0</span>
                     </div>
 
                     <div class="pl-2 space-y-2.5">
@@ -534,7 +534,7 @@
                     <hr class="border-gray-200 border-dashed my-3">
                     <div class="flex justify-between items-center font-bold text-gray-900 mb-2">
                         <span>Penyesuaian</span>
-                        <span id="modal-penyesuaian" class="font-medium text-orange-500">Rp 0</span>
+                        <span id="modal-penyesuaian" class="font-medium">Rp 0</span>
                     </div>
                 </div>
 
@@ -559,7 +559,6 @@
         // --- State Application ---
         let transactions = [];
         let searchQuery = ''; 
-        
         let topCostsSortBy = 'nominal'; 
 
         // --- Init ---
@@ -596,6 +595,18 @@
             return isNegative ? `-Rp ${str}` : `Rp ${str}`;
         };
 
+        const setCurrencyText = (id, value) => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerText = formatUang(value);
+                if (value < 0) {
+                    el.style.color = '#ef4444'; // Merah (text-red-500)
+                } else {
+                    el.style.color = ''; // Reset ke default
+                }
+            }
+        };
+
         const formatPercent = (value, total) => {
             if (!total || total === 0 || value === 0) return '';
             return Math.abs((value / total) * 100).toFixed(1) + '%';
@@ -620,7 +631,7 @@
         };
 
         window.copyToClipboard = (text, btnId, event) => {
-            if(event) event.stopPropagation(); // Mencegah klik menyebar ke buka modal
+            if(event) event.stopPropagation();
             const textarea = document.createElement('textarea');
             textarea.value = text;
             textarea.style.position = 'fixed';
@@ -751,7 +762,7 @@
             setText('modal-id-pesanan-footer', `ID: ${tx.product}`);
 
             const assignRow = (rowId, valId, pctId, value) => {
-                setText(valId, formatUang(value));
+                setCurrencyText(valId, value);
                 if(pctId) {
                     const pctSpan = document.getElementById(pctId);
                     if(pctSpan) {
@@ -764,7 +775,7 @@
             };
 
             // Pendapatan
-            setText('modal-total-pendapatan', formatUang(details.totalPendapatan));
+            setCurrencyText('modal-total-pendapatan', details.totalPendapatan);
             assignRow('row-subtotal-sblm', 'modal-subtotal-sblm', null, details.subtotalSebelumDiskon);
             assignRow('row-diskon-penjual', 'modal-diskon-penjual', null, details.diskonPenjual);
             assignRow('row-biaya-produk-horison', 'modal-biaya-produk-horison', null, details.biayaProdukHorison);
@@ -772,12 +783,12 @@
             assignRow('row-refund-diskon-penjual', 'modal-refund-diskon-penjual', null, details.refundDiskonPenjual);
 
             // Biaya
-            setText('modal-total-biaya', formatUang(details.totalBiaya));
+            setCurrencyText('modal-total-biaya', details.totalBiaya);
             setText('pct-total-biaya', formatPercent(details.totalBiaya, revenue));
             
             // Komisi
             const totalKomisiPlatform = (details.biayaKomisiSebelumDiskon || 0) + (details.diskonBelanjaIklan || 0) + (details.diskonKomisiLainnya || 0) || details.biayaKomisiPlatform;
-            setText('modal-komisi', formatUang(totalKomisiPlatform));
+            setCurrencyText('modal-komisi', totalKomisiPlatform);
             setText('pct-komisi', formatPercent(totalKomisiPlatform, revenue));
             assignRow('row-komisi-sebelum', 'modal-komisi-sebelum', null, details.biayaKomisiSebelumDiskon);
             assignRow('row-diskon-iklan', 'modal-diskon-iklan', null, details.diskonBelanjaIklan);
@@ -789,13 +800,13 @@
 
             // Payment
             const totalPayment = details.biayaPembayaran || 0;
-            setText('modal-payment', formatUang(totalPayment));
+            setCurrencyText('modal-payment', totalPayment);
             setText('pct-payment', formatPercent(totalPayment, revenue));
             assignRow('row-cc-installment', 'modal-cc-installment', null, details.ccInstallment);
             toggleRow('row-payment-group', totalPayment !== 0 || details.ccInstallment !== 0);
 
             // Ongkir
-            setText('modal-ongkir-total', formatUang(details.ongkir));
+            setCurrencyText('modal-ongkir-total', details.ongkir);
             setText('pct-ongkir', formatPercent(details.ongkir, revenue));
             assignRow('row-ongkir-ditalangi', 'modal-ongkir-ditalangi', null, details.ongkirDitalangi);
             assignRow('row-ongkir-platform', 'modal-ongkir-platform', null, details.ongkirPlatform);
@@ -808,7 +819,7 @@
             toggleRow('row-ongkir-group', details.ongkir !== 0 || details.ongkirDitalangi !== 0 || details.ongkirPlatform !== 0 || details.ongkirPembeli !== 0 || details.subsidiOngkir !== 0);
 
             // Afiliasi
-            setText('modal-afiliasi-total', formatUang(details.komisiAfiliasi));
+            setCurrencyText('modal-afiliasi-total', details.komisiAfiliasi);
             setText('pct-afiliasi', formatPercent(details.komisiAfiliasi, revenue));
             assignRow('row-afiliasi-mitra', 'modal-afiliasi-mitra', null, details.komisiMitraAfiliasi);
             assignRow('row-afiliasi-iklan-toko', 'modal-afiliasi-iklan-toko', null, details.komisiIklanTokoAfiliasi);
@@ -825,15 +836,15 @@
             assignRow('row-pemrosesan', 'modal-pemrosesan', 'pct-pemrosesan', details.biayaPemrosesan);
 
             // GMV Max
-            setText('modal-gmvmax', formatUang(details.iklanGMVMax));
+            setCurrencyText('modal-gmvmax', details.iklanGMVMax);
             setText('pct-gmvmax', formatPercent(details.iklanGMVMax, revenue));
             assignRow('row-voucher-gmvmax', 'modal-voucher-gmvmax', null, details.voucherGMVMax);
             toggleRow('row-gmvmax-group', details.iklanGMVMax !== 0 || details.voucherGMVMax !== 0);
 
             // Penyesuaian & Penyelesaian
-            setText('modal-penyesuaian', formatUang(details.penyesuaian));
+            setCurrencyText('modal-penyesuaian', details.penyesuaian);
             toggleRow('row-penyesuaian-group', details.penyesuaian);
-            setText('modal-penyelesaian', formatUang(details.penyelesaian));
+            setCurrencyText('modal-penyelesaian', details.penyelesaian);
 
             removeClass('transaction-modal', 'hidden');
         }
@@ -953,7 +964,7 @@
                                 </div>
                             </td>
                             <td class="p-4 text-sm text-right font-medium text-gray-800">${formatUang(revenue).replace('-','')}</td>
-                            <td class="p-4 text-sm text-right text-gray-800">-${formatUang(cost).replace('-','')}</td>
+                            <td class="p-4 text-sm text-right font-medium text-red-500">-${formatUang(cost).replace('-','')}</td>
                             <td class="p-4 text-center">
                                 <span class="inline-block text-[11px] font-semibold bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full">
                                     ${formatPercent(cost, revenue)}
