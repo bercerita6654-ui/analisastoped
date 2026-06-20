@@ -111,7 +111,7 @@
                     <div class="space-y-4">
                         <div>
                             <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-600">Komisi & Layanan (Platform, Mall, dll)</span>
+                                <span class="text-gray-600">Komisi & Layanan</span>
                                 <span id="val-admin" class="font-semibold">Rp 0</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2">
@@ -120,7 +120,7 @@
                         </div>
                         <div>
                             <div class="flex justify-between text-sm mb-1">
-                                <span class="text-gray-600">Afiliasi, Iklan GMV Max, & LIVE</span>
+                                <span class="text-gray-600">Afiliasi, GMV Max, & LIVE</span>
                                 <span id="val-ads" class="font-semibold">Rp 0</span>
                             </div>
                             <div class="w-full bg-gray-100 rounded-full h-2">
@@ -146,7 +146,7 @@
                         <span id="gmv-count" class="bg-blue-50 text-blue-600 text-xs font-bold px-2 py-1 rounded border border-blue-100">0 Data</span>
                     </div>
                     <div class="overflow-y-auto flex-grow gmv-scroll max-h-48 pr-2 space-y-2" id="gmv-list">
-                        <!-- Konten akan diisi oleh JS -->
+                        <p class="text-sm text-gray-400 italic p-2">Tidak ada pesanan dengan potongan GMV Max.</p>
                     </div>
                 </div>
 
@@ -154,7 +154,14 @@
                 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 lg:col-span-1">
                     <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center"><i data-lucide="store" class="w-5 h-5 mr-2 text-gray-500"></i> Ringkasan Laporan</h3>
                     <div id="platform-stats" class="space-y-4">
-                        <!-- Konten akan diisi oleh JS -->
+                        <div class="p-4 rounded-lg border text-gray-800 bg-gray-100 border-gray-300 bg-opacity-50">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-bold">Total Transaksi</span>
+                                <span id="total-trx-count" class="text-xs font-medium px-2 py-1 bg-white rounded-full shadow-sm">0 trx</span>
+                            </div>
+                            <p id="total-profit-box" class="text-xl font-bold">Rp 0</p>
+                            <p class="text-xs mt-1 opacity-80">Total Penyelesaian Laba</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -168,7 +175,7 @@
                 </div>
                 <h2 class="text-2xl font-bold text-gray-800 mb-2">Import Data Laporan</h2>
                 <p class="text-gray-600 mb-6 max-w-md mx-auto">
-                    Unggah file Excel laporan penjualan Anda. Sistem otomatis membaca sheet <strong class="text-gray-800">"Detail pesanan"</strong> sesuai dengan kamus "Penjelasan tentang biaya".
+                    Unggah file Excel atau CSV laporan penjualan Anda. Sistem otomatis membaca sheet <strong class="text-gray-800">"Detail pesanan"</strong>.
                 </p>
 
                 <div class="border-2 border-dashed border-gray-300 rounded-xl p-8 bg-gray-50 hover:bg-gray-100 transition-colors relative cursor-pointer group">
@@ -244,14 +251,14 @@
                         </thead>
                         <tbody id="riwayat-body">
                             <!-- Data akan diisi oleh JS -->
+                            <tr>
+                                <td colspan="7" class="p-10 text-center text-gray-500">
+                                    <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-4 opacity-20"></i>
+                                    <p>Belum ada data transaksi.</p>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
-                    
-                    <!-- Pesan Kosong -->
-                    <div id="empty-state" class="p-10 text-center text-gray-500 hidden">
-                        <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-4 opacity-20"></i>
-                        <p>Belum ada data transaksi.</p>
-                    </div>
                 </div>
 
                 <!-- Paginasi -->
@@ -273,7 +280,6 @@
     <!-- Modal Top 10 Potongan Tertinggi -->
     <div id="top-costs-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-[60] hidden flex items-center justify-center p-4 transition-opacity backdrop-blur-sm">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <!-- Header -->
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-white">
                 <h3 class="font-bold text-gray-900 text-lg flex items-center">
                     <i data-lucide="trending-down" class="w-5 h-5 mr-2 text-red-500"></i> Top 10 Potongan Tertinggi
@@ -283,11 +289,10 @@
                 </button>
             </div>
             
-            <!-- Toggle Urutkan Berdasarkan -->
             <div class="px-6 py-3 border-b border-gray-100 bg-gray-50 flex items-center gap-3">
                 <span class="text-sm font-medium text-gray-700">Urutkan berdasarkan:</span>
                 <div class="flex bg-white rounded-lg border border-gray-300 p-0.5 shadow-sm">
-                    <button id="sort-by-nominal" onclick="updateTopCostsList('nominal')" class="px-3 py-1 text-sm rounded-md bg-blue-50 text-blue-600 font-medium transition-colors">
+                    <button id="sort-by-nominal" onclick="updateTopCostsList('nominal')" class="px-3 py-1 text-sm rounded-md bg-blue-50 text-blue-600 font-medium transition-colors shadow-sm">
                         Nominal (Rp)
                     </button>
                     <button id="sort-by-percent" onclick="updateTopCostsList('percent')" class="px-3 py-1 text-sm rounded-md text-gray-600 hover:text-gray-900 font-medium transition-colors">
@@ -296,11 +301,9 @@
                 </div>
             </div>
 
-            <!-- Body List -->
-            <div class="overflow-y-auto modal-scroll p-4 bg-gray-50 space-y-3" id="top-costs-list">
+            <div class="overflow-y-auto modal-scroll p-4 bg-gray-50 space-y-3 flex-grow" id="top-costs-list">
                 <!-- List diisi oleh JS -->
             </div>
-            <!-- Footer -->
             <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-end">
                 <button onclick="closeTopCostsModal()" class="px-5 py-2 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors">Tutup</button>
             </div>
@@ -310,7 +313,6 @@
     <!-- Modal Rincian Pesanan Hierarki Lengkap -->
     <div id="transaction-modal" class="fixed inset-0 bg-gray-900 bg-opacity-60 z-50 hidden flex items-center justify-center p-4 transition-opacity backdrop-blur-sm">
         <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in-95 duration-200">
-            <!-- Modal Header -->
             <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center bg-white">
                 <h3 class="font-bold text-gray-900 text-lg flex items-center">
                     Rincian Jumlah Penyelesaian
@@ -320,7 +322,6 @@
                 </button>
             </div>
             
-            <!-- Modal Body Hierarki Lengkap TikTok -->
             <div class="p-6 overflow-y-auto modal-scroll space-y-5 text-sm text-gray-700">
                 
                 <!-- Section Pendapatan -->
@@ -355,7 +356,7 @@
 
                 <hr class="border-gray-200 border-dashed">
 
-                <!-- Section Biaya Utama dengan Persentase Total -->
+                <!-- Section Biaya -->
                 <div>
                     <div class="flex justify-between items-center font-bold text-gray-900 mb-3 bg-red-50 p-2 rounded-lg border border-red-100">
                         <span class="flex items-center text-red-800">
@@ -365,7 +366,6 @@
                         <span id="modal-total-biaya" class="text-red-700">-Rp 0</span>
                     </div>
 
-                    <!-- Grid List untuk kerapian baris -->
                     <div class="pl-2 space-y-2.5">
                         
                         <!-- Hierarki Komisi Platform -->
@@ -393,7 +393,6 @@
                             </div>
                         </div>
 
-                        <!-- Single items 1 -->
                         <div class="flex justify-between items-center border-b border-gray-50 pb-1" id="row-preorder">
                             <span class="flex items-center text-gray-700">Biaya layanan pre-order <span id="pct-preorder" class="ml-2 text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">0%</span></span>
                             <span id="modal-preorder" class="font-medium">-Rp 0</span>
@@ -420,7 +419,7 @@
                             </div>
                         </div>
 
-                        <!-- Hierarki Ongkir Besar -->
+                        <!-- Hierarki Ongkir -->
                         <div id="row-ongkir-group" class="border-b border-gray-50 pb-2">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="flex items-center font-medium text-gray-800">
@@ -498,7 +497,6 @@
                             </div>
                         </div>
 
-                        <!-- Sisa Biaya Lainnya -->
                         <div class="flex justify-between items-center border-b border-gray-50 pb-1" id="row-bebasongkir">
                             <span class="flex items-center text-gray-700">Biaya layanan Program Bebas Ongkir <span id="pct-bebasongkir" class="ml-2 text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">0%</span></span>
                             <span id="modal-bebasongkir" class="font-medium">-Rp 0</span>
@@ -562,9 +560,8 @@
                 </div>
             </div>
             
-            <!-- Modal Footer -->
             <div class="px-6 py-4 border-t border-gray-200 bg-white flex justify-between items-center">
-                <span id="modal-id-pesanan" class="text-xs text-gray-400 font-mono">ID: -</span>
+                <span id="modal-id-pesanan-footer" class="text-xs text-gray-400 font-mono">ID: -</span>
                 <button onclick="closeModal()" class="px-5 py-2 bg-gray-900 text-white font-medium rounded-lg hover:bg-gray-800 transition-colors">Tutup</button>
             </div>
         </div>
@@ -576,17 +573,14 @@
         let transactions = [];
         let searchQuery = ''; 
         
-        // State Paginasi
+        // Paginasi & Top Cost State
         let currentPage = 1;
         const itemsPerPage = 100;
-        
-        // State Top Costs
-        let topCostsSortBy = 'nominal'; // 'nominal' or 'percent'
+        let topCostsSortBy = 'nominal'; 
 
-        // --- Inisialisasi Aplikasi ---
+        // --- Init ---
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
-            updateApp();
             
             document.getElementById('transaction-modal').addEventListener('click', function(e) {
                 if (e.target === this) closeModal();
@@ -601,11 +595,17 @@
                 renderRiwayat(); 
             });
 
-            // Event Listener for Fetch CSV Button
             document.getElementById('btn-fetch-csv').addEventListener('click', fetchCSVFromURL);
         });
 
-        // --- Helper Functions ---
+        // --- DOM Helpers ---
+        const setText = (id, text) => { const el = document.getElementById(id); if (el) el.innerText = text; };
+        const setHTML = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+        const setWidth = (id, width) => { const el = document.getElementById(id); if (el) el.style.width = width; };
+        const addClass = (id, cls) => { const el = document.getElementById(id); if (el) el.classList.add(cls); };
+        const removeClass = (id, cls) => { const el = document.getElementById(id); if (el) el.classList.remove(cls); };
+
+        // --- Format Helpers ---
         const formatUang = (num) => {
             if (num === 0 || !num) return 'Rp 0';
             const isNegative = num < 0;
@@ -632,12 +632,11 @@
         const toggleRow = (id, value) => {
             const el = document.getElementById(id);
             if (el) {
-                el.style.display = value !== 0 ? 'flex' : 'none';
+                el.style.display = (value !== 0 && value !== undefined && value !== null) ? 'flex' : 'none';
             }
         };
 
-        // --- Fungsi Salin Teks ---
-        window.copyToClipboard = (text, btn) => {
+        window.copyToClipboard = (text, btnId) => {
             const textarea = document.createElement('textarea');
             textarea.value = text;
             textarea.style.position = 'fixed';
@@ -647,15 +646,16 @@
             
             try {
                 document.execCommand('copy');
-                
-                const originalHTML = btn.innerHTML;
-                btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-green-500 pointer-events-none"></i>';
-                lucide.createIcons();
-                
-                setTimeout(() => {
-                    btn.innerHTML = originalHTML;
-                    lucide.createIcons();
-                }, 1500);
+                const btn = document.getElementById(btnId);
+                if(btn) {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<i data-lucide="check" class="w-4 h-4 text-green-500 pointer-events-none"></i>';
+                    if (window.lucide) window.lucide.createIcons();
+                    setTimeout(() => {
+                        btn.innerHTML = originalHTML;
+                        if (window.lucide) window.lucide.createIcons();
+                    }, 1500);
+                }
             } catch (err) {
                 console.error('Gagal menyalin:', err);
             } finally {
@@ -663,18 +663,22 @@
             }
         };
 
-        // --- Tab Navigation ---
-        function switchTab(tabId) {
+        // --- Tab Logic ---
+        window.switchTab = (tabId) => {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            const targetTab = document.getElementById(tabId);
+            if (targetTab) targetTab.classList.add('active');
 
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.className = 'tab-btn flex-1 py-2 px-4 rounded-lg flex items-center justify-center space-x-2 font-medium text-sm transition-all whitespace-nowrap text-gray-600 hover:text-gray-800';
             });
-            document.getElementById(`btn-${tabId}`).className = 'tab-btn flex-1 py-2 px-4 rounded-lg flex items-center justify-center space-x-2 font-medium text-sm transition-all whitespace-nowrap bg-white text-blue-600 shadow-sm';
+            const targetBtn = document.getElementById(`btn-${tabId}`);
+            if (targetBtn) targetBtn.className = 'tab-btn flex-1 py-2 px-4 rounded-lg flex items-center justify-center space-x-2 font-medium text-sm transition-all whitespace-nowrap bg-white text-blue-600 shadow-sm';
+            
+            if(tabId === 'dashboard') renderDashboard();
         }
 
-        // --- Pencarian Top 10 Potongan Tertinggi ---
+        // --- Modals Logic ---
         window.showHighestCost = () => {
             if (transactions.length === 0) {
                 alert("Belum ada data transaksi yang dimuat.");
@@ -682,8 +686,8 @@
             }
             topCostsSortBy = 'nominal'; 
             updateTopCostsList();
-            document.getElementById('top-costs-modal').classList.remove('hidden');
-            lucide.createIcons();
+            removeClass('top-costs-modal', 'hidden');
+            if (window.lucide) window.lucide.createIcons();
         };
 
         window.updateTopCostsList = (sortBy = topCostsSortBy) => {
@@ -693,11 +697,11 @@
             const btnPercent = document.getElementById('sort-by-percent');
             
             if(sortBy === 'nominal') {
-                btnNominal.className = "px-3 py-1 text-sm rounded-md bg-blue-50 text-blue-600 font-medium transition-colors shadow-sm";
-                btnPercent.className = "px-3 py-1 text-sm rounded-md text-gray-600 hover:text-gray-900 font-medium transition-colors";
+                if(btnNominal) btnNominal.className = "px-3 py-1 text-sm rounded-md bg-blue-50 text-blue-600 font-medium transition-colors shadow-sm";
+                if(btnPercent) btnPercent.className = "px-3 py-1 text-sm rounded-md text-gray-600 hover:text-gray-900 font-medium transition-colors";
             } else {
-                btnPercent.className = "px-3 py-1 text-sm rounded-md bg-blue-50 text-blue-600 font-medium transition-colors shadow-sm";
-                btnNominal.className = "px-3 py-1 text-sm rounded-md text-gray-600 hover:text-gray-900 font-medium transition-colors";
+                if(btnPercent) btnPercent.className = "px-3 py-1 text-sm rounded-md bg-blue-50 text-blue-600 font-medium transition-colors shadow-sm";
+                if(btnNominal) btnNominal.className = "px-3 py-1 text-sm rounded-md text-gray-600 hover:text-gray-900 font-medium transition-colors";
             }
 
             const validTx = transactions.filter(t => Math.abs(t.details.totalBiaya || 0) > 0);
@@ -718,109 +722,97 @@
             });
 
             const top10 = sortedTx.slice(0, 10);
-            
             const listContainer = document.getElementById('top-costs-list');
-            listContainer.innerHTML = '';
+            
+            if (listContainer) {
+                listContainer.innerHTML = '';
+                top10.forEach((tx, index) => {
+                    const cost = Math.abs(tx.details.totalBiaya || 0);
+                    const revenue = tx.details.totalPendapatan || tx.revenue || 0;
+                    const pct = formatPercent(cost, revenue);
+                    const absCostStr = formatUang(cost).replace('-', '');
 
-            top10.forEach((tx, index) => {
-                const cost = Math.abs(tx.details.totalBiaya || 0);
-                const revenue = tx.details.totalPendapatan || tx.revenue || 0;
-                const pct = formatPercent(cost, revenue);
-                const absCostStr = formatUang(cost).replace('-', '');
-
-                listContainer.innerHTML += `
-                    <div class="flex items-center justify-between p-4 mb-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 transition-colors">
-                        <div class="flex items-center gap-3 w-2/3">
-                            <span class="font-bold text-gray-400 w-5">${index + 1}.</span>
-                            <div>
-                                <button onclick="closeTopCostsModal(); openModal(${tx.id})" class="text-blue-600 hover:text-blue-800 hover:underline font-medium text-sm text-left truncate w-full block" title="Lihat Rincian ${tx.product}">
-                                    ${tx.product}
-                                </button>
-                                <p class="text-xs text-gray-500 mt-1">Total (AIO): ${formatUang(revenue)}</p>
+                    listContainer.innerHTML += `
+                        <div class="flex items-center justify-between p-4 mb-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 transition-colors">
+                            <div class="flex items-center gap-3 w-2/3">
+                                <span class="font-bold text-gray-400 w-5">${index + 1}.</span>
+                                <div class="truncate">
+                                    <button onclick="closeTopCostsModal(); openModal(${tx.id})" class="text-blue-600 hover:text-blue-800 hover:underline font-medium text-sm text-left truncate w-full block">
+                                        ${tx.product}
+                                    </button>
+                                    <p class="text-xs text-gray-500 mt-1">Total (AIO): ${formatUang(revenue)}</p>
+                                </div>
+                            </div>
+                            <div class="text-right w-1/3">
+                                <span class="block font-bold text-red-600 text-sm">-${absCostStr}</span>
+                                <span class="inline-block mt-1 text-[10px] font-semibold ${sortBy === 'percent' ? 'bg-red-100 text-red-700' : 'bg-red-50 text-red-500'} border border-red-100 px-2 py-0.5 rounded-full">${pct} potongan</span>
                             </div>
                         </div>
-                        <div class="text-right w-1/3">
-                            <span class="block font-bold text-red-600 text-sm">-${absCostStr}</span>
-                            <span class="inline-block mt-1 text-[10px] font-semibold ${sortBy === 'percent' ? 'bg-red-100 text-red-700' : 'bg-red-50 text-red-500'} border border-red-100 px-2 py-0.5 rounded-full">${pct} potongan</span>
-                        </div>
-                    </div>
-                `;
-            });
+                    `;
+                });
+            }
         };
 
         window.closeTopCostsModal = () => {
-            document.getElementById('top-costs-modal').classList.add('hidden');
+            addClass('top-costs-modal', 'hidden');
         };
 
-        // --- Paginasi Logic ---
-        window.prevPage = () => {
-            if (currentPage > 1) {
-                currentPage--;
-                renderRiwayat();
-            }
-        };
-
-        window.nextPage = () => {
-            const filteredTransactions = transactions.filter(t => 
-                t.product.toLowerCase().includes(searchQuery)
-            );
-            const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-            if (currentPage < totalPages) {
-                currentPage++;
-                renderRiwayat();
-            }
-        };
-
-        // --- Modal Logic (Rincian Hirarki Penuh TikTok) ---
-        function openModal(txId) {
+        window.openModal = (txId) => {
             const tx = transactions.find(t => t.id === txId);
             if(!tx) return;
 
-            document.getElementById('modal-id-pesanan').innerText = `ID: ${tx.product}`;
-            
-            const details = tx.details;
+            const details = tx.details || {};
             const revenue = details.totalPendapatan || tx.revenue || 0; 
+            
+            setText('modal-id-pesanan-footer', `ID: ${tx.product}`);
 
             const assignRow = (rowId, valId, pctId, value) => {
-                document.getElementById(valId).innerText = formatUang(value);
+                setText(valId, formatUang(value));
                 if(pctId) {
                     const pctSpan = document.getElementById(pctId);
-                    const pct = formatPercent(value, revenue);
-                    if(pctSpan) { pctSpan.innerText = pct; pctSpan.style.display = pct ? 'inline-block' : 'none'; }
+                    if(pctSpan) {
+                        const pct = formatPercent(value, revenue);
+                        pctSpan.innerText = pct; 
+                        pctSpan.style.display = pct ? 'inline-block' : 'none'; 
+                    }
                 }
                 toggleRow(rowId, value);
             };
 
-            // --- Section Pendapatan ---
-            document.getElementById('modal-total-pendapatan').innerText = formatUang(details.totalPendapatan);
-            
+            // Pendapatan
+            setText('modal-total-pendapatan', formatUang(details.totalPendapatan));
             assignRow('row-subtotal-sblm', 'modal-subtotal-sblm', null, details.subtotalSebelumDiskon);
             assignRow('row-diskon-penjual', 'modal-diskon-penjual', null, details.diskonPenjual);
             assignRow('row-biaya-produk-horison', 'modal-biaya-produk-horison', null, details.biayaProdukHorison);
             assignRow('row-subtotal-refund-sblm', 'modal-subtotal-refund-sblm', null, details.subtotalRefundSebelum);
             assignRow('row-refund-diskon-penjual', 'modal-refund-diskon-penjual', null, details.refundDiskonPenjual);
 
-
-            // --- Section Biaya ---
-            document.getElementById('modal-total-biaya').innerText = formatUang(details.totalBiaya);
-            document.getElementById('pct-total-biaya').innerText = formatPercent(details.totalBiaya, revenue);
+            // Biaya
+            setText('modal-total-biaya', formatUang(details.totalBiaya));
+            setText('pct-total-biaya', formatPercent(details.totalBiaya, revenue));
             
-            // Hierarki Komisi Platform
+            // Komisi
+            const totalKomisiPlatform = (details.biayaKomisiSebelumDiskon || 0) + (details.diskonBelanjaIklan || 0) + (details.diskonKomisiLainnya || 0) || details.biayaKomisiPlatform;
+            setText('modal-komisi', formatUang(totalKomisiPlatform));
+            setText('pct-komisi', formatPercent(totalKomisiPlatform, revenue));
             assignRow('row-komisi-sebelum', 'modal-komisi-sebelum', null, details.biayaKomisiSebelumDiskon);
             assignRow('row-diskon-iklan', 'modal-diskon-iklan', null, details.diskonBelanjaIklan);
             assignRow('row-diskon-komisi-lain', 'modal-diskon-komisi-lain', null, details.diskonKomisiLainnya);
-            
-            document.getElementById('modal-komisi').innerText = formatUang(details.biayaKomisiPlatform);
-            document.getElementById('pct-komisi').innerText = formatPercent(details.biayaKomisiPlatform, revenue);
-            toggleRow('row-komisi-group', details.biayaKomisiPlatform !== 0 || details.biayaKomisiSebelumDiskon !== 0 || details.diskonBelanjaIklan !== 0 || details.diskonKomisiLainnya !== 0);
+            toggleRow('row-komisi-group', totalKomisiPlatform !== 0 || details.biayaKomisiSebelumDiskon !== 0 || details.diskonBelanjaIklan !== 0 || details.diskonKomisiLainnya !== 0);
 
-            // Hierarki Pembayaran
+            assignRow('row-preorder', 'modal-preorder', 'pct-preorder', details.biayaLayananPreOrder);
+            assignRow('row-mall', 'modal-mall', 'pct-mall', details.biayaLayananMall);
+
+            // Payment
+            const totalPayment = details.biayaPembayaran || 0;
+            setText('modal-payment', formatUang(totalPayment));
+            setText('pct-payment', formatPercent(totalPayment, revenue));
             assignRow('row-cc-installment', 'modal-cc-installment', null, details.ccInstallment);
-            document.getElementById('modal-payment').innerText = formatUang(details.biayaPembayaran);
-            document.getElementById('pct-payment').innerText = formatPercent(details.biayaPembayaran, revenue);
-            toggleRow('row-payment-group', details.biayaPembayaran !== 0 || details.ccInstallment !== 0);
+            toggleRow('row-payment-group', totalPayment !== 0 || details.ccInstallment !== 0);
 
-            // Hierarki Ongkir Besar
+            // Ongkir
+            setText('modal-ongkir-total', formatUang(details.ongkir));
+            setText('pct-ongkir', formatPercent(details.ongkir, revenue));
             assignRow('row-ongkir-ditalangi', 'modal-ongkir-ditalangi', null, details.ongkirDitalangi);
             assignRow('row-ongkir-platform', 'modal-ongkir-platform', null, details.ongkirPlatform);
             assignRow('row-ongkir-pembeli', 'modal-ongkir-pembeli', null, details.ongkirPembeli);
@@ -829,31 +821,18 @@
             assignRow('row-subsidi-ongkir', 'modal-subsidi-ongkir', null, details.subsidiOngkir);
             assignRow('row-ongkir-horison', 'modal-ongkir-horison', null, details.biayaKirimHorison);
             assignRow('row-biaya-logistik', 'modal-biaya-logistik', null, details.biayaLayananLogistik);
-
-            document.getElementById('modal-ongkir-total').innerText = formatUang(details.ongkir);
-            document.getElementById('pct-ongkir').innerText = formatPercent(details.ongkir, revenue);
             toggleRow('row-ongkir-group', details.ongkir !== 0 || details.ongkirDitalangi !== 0 || details.ongkirPlatform !== 0 || details.ongkirPembeli !== 0 || details.subsidiOngkir !== 0);
 
-            // Hierarki Komisi Afiliasi
+            // Afiliasi
+            setText('modal-afiliasi-total', formatUang(details.komisiAfiliasi));
+            setText('pct-afiliasi', formatPercent(details.komisiAfiliasi, revenue));
             assignRow('row-afiliasi-mitra', 'modal-afiliasi-mitra', null, details.komisiMitraAfiliasi);
             assignRow('row-afiliasi-iklan-toko', 'modal-afiliasi-iklan-toko', null, details.komisiIklanTokoAfiliasi);
             assignRow('row-afiliasi-deposit', 'modal-afiliasi-deposit', null, details.depositKomisiAfiliasi);
             assignRow('row-afiliasi-refund', 'modal-afiliasi-refund', null, details.refundKomisiAfiliasi);
             assignRow('row-afiliasi-iklan-mitra', 'modal-afiliasi-iklan-mitra', null, details.komisiIklanTokoMitra);
-            
-            document.getElementById('modal-afiliasi-total').innerText = formatUang(details.komisiAfiliasi);
-            document.getElementById('pct-afiliasi').innerText = formatPercent(details.komisiAfiliasi, revenue);
             toggleRow('row-afiliasi-group', details.komisiAfiliasi !== 0 || details.komisiMitraAfiliasi !== 0 || details.komisiIklanTokoAfiliasi !== 0);
 
-            // Hierarki GMV Max
-            assignRow('row-voucher-gmvmax', 'modal-voucher-gmvmax', null, details.voucherGMVMax);
-            document.getElementById('modal-gmvmax').innerText = formatUang(details.iklanGMVMax);
-            document.getElementById('pct-gmvmax').innerText = formatPercent(details.iklanGMVMax, revenue);
-            toggleRow('row-gmvmax-group', details.iklanGMVMax !== 0 || details.voucherGMVMax !== 0);
-
-            // Item Biaya Lainnya
-            assignRow('row-preorder', 'modal-preorder', 'pct-preorder', details.biayaLayananPreOrder);
-            assignRow('row-mall', 'modal-mall', 'pct-mall', details.biayaLayananMall);
             assignRow('row-bebasongkir', 'modal-bebasongkir', 'pct-bebasongkir', details.bebasOngkir);
             assignRow('row-dinamis', 'modal-dinamis', 'pct-dinamis', details.komisiDinamis);
             assignRow('row-cashback', 'modal-cashback', 'pct-cashback', details.layananCashback);
@@ -861,60 +840,72 @@
             assignRow('row-akses', 'modal-akses', 'pct-akses', details.aksesEksklusif);
             assignRow('row-pemrosesan', 'modal-pemrosesan', 'pct-pemrosesan', details.biayaPemrosesan);
 
-            // --- Section Penyesuaian ---
-            document.getElementById('modal-penyesuaian').innerText = formatUang(details.penyesuaian);
+            // GMV Max
+            setText('modal-gmvmax', formatUang(details.iklanGMVMax));
+            setText('pct-gmvmax', formatPercent(details.iklanGMVMax, revenue));
+            assignRow('row-voucher-gmvmax', 'modal-voucher-gmvmax', null, details.voucherGMVMax);
+            toggleRow('row-gmvmax-group', details.iklanGMVMax !== 0 || details.voucherGMVMax !== 0);
+
+            // Penyesuaian & Penyelesaian
+            setText('modal-penyesuaian', formatUang(details.penyesuaian));
             toggleRow('row-penyesuaian-group', details.penyesuaian);
+            setText('modal-penyelesaian', formatUang(details.penyelesaian));
 
-            // --- Penyelesaian ---
-            document.getElementById('modal-penyelesaian').innerText = formatUang(details.penyelesaian);
-
-            document.getElementById('transaction-modal').classList.remove('hidden');
+            removeClass('transaction-modal', 'hidden');
         }
 
-        function closeModal() {
-            document.getElementById('transaction-modal').classList.add('hidden');
+        window.closeModal = () => {
+            addClass('transaction-modal', 'hidden');
         }
 
-        // --- Core Update UI ---
-        function updateApp() {
-            renderDashboard();
-            renderRiwayat();
-            lucide.createIcons(); 
-        }
-
+        // --- Render UI ---
         function renderDashboard() {
-            let totalRevenue = 0, totalAdmin = 0, totalShipping = 0, totalAds = 0;
-            let netSettlementTotal = 0;
-            
-            // Variabel untuk daftar Iklan GMV Max
-            const gmvListContainer = document.getElementById('gmv-list');
-            const gmvCountBadge = document.getElementById('gmv-count');
+            let totalRevenue = 0, totalAdmin = 0, totalShipping = 0, totalAds = 0, netSettlementTotal = 0;
             let gmvTransactions = [];
 
             transactions.forEach(t => {
-                totalRevenue += Number(t.details.totalPendapatan) || Number(t.revenue); 
-                totalAdmin += Number(t.adminFee);
-                totalShipping += Number(t.shipping);
-                totalAds += Number(t.ads);
-                netSettlementTotal += Number(t.netSettlement);
+                totalRevenue += Number(t.details?.totalPendapatan) || Number(t.revenue) || 0; 
+                totalAdmin += Number(t.adminFee) || 0;
+                totalShipping += Number(t.shipping) || 0;
+                totalAds += Number(t.ads) || 0;
+                netSettlementTotal += Number(t.netSettlement) || 0;
                 
-                // Cek jika pesanan terkena potongan GMV Max (nilai tidak nol)
                 if(t.details && Math.abs(t.details.iklanGMVMax || 0) > 0) {
                     gmvTransactions.push(t);
                 }
             });
 
-            // Update UI Daftar GMV Max di Dashboard
-            if(gmvListContainer && gmvCountBadge) {
-                gmvCountBadge.innerText = `${gmvTransactions.length} Data`;
+            const totalOpCost = totalAdmin + totalShipping + totalAds;
+            const profitMargin = totalRevenue > 0 ? ((netSettlementTotal / totalRevenue) * 100).toFixed(1) : 0;
+
+            setText('stat-revenue', formatUang(totalRevenue).replace('-',''));
+            setText('stat-cost', formatUang(totalOpCost).replace('-',''));
+            setText('stat-profit', formatUang(netSettlementTotal));
+            setText('stat-margin', `Margin: ${profitMargin}%`);
+
+            setText('val-admin', formatUang(totalAdmin).replace('-',''));
+            setWidth('bar-admin', `${totalOpCost > 0 ? (totalAdmin/totalOpCost)*100 : 0}%`);
+            
+            setText('val-ads', formatUang(totalAds).replace('-',''));
+            setWidth('bar-ads', `${totalOpCost > 0 ? (totalAds/totalOpCost)*100 : 0}%`);
+            
+            setText('val-shipping', formatUang(totalShipping).replace('-',''));
+            setWidth('bar-shipping', `${totalOpCost > 0 ? (totalShipping/totalOpCost)*100 : 0}%`);
+
+            setText('total-trx-count', `${transactions.length} trx`);
+            setText('total-profit-box', formatUang(netSettlementTotal));
+            
+            // Update GMV List
+            const gmvListContainer = document.getElementById('gmv-list');
+            
+            if(gmvListContainer) {
+                setText('gmv-count', `${gmvTransactions.length} Data`);
                 gmvListContainer.innerHTML = '';
                 
                 if(gmvTransactions.length === 0) {
                     gmvListContainer.innerHTML = `<p class="text-sm text-gray-400 italic p-2">Tidak ada pesanan dengan potongan GMV Max.</p>`;
                 } else {
-                    // Urutkan dari potongan GMV terbesar
                     gmvTransactions.sort((a, b) => Math.abs(b.details.iklanGMVMax) - Math.abs(a.details.iklanGMVMax));
-                    
                     gmvTransactions.forEach(t => {
                         const gmvCost = Math.abs(t.details.iklanGMVMax);
                         const rev = t.details.totalPendapatan || t.revenue || 0;
@@ -936,62 +927,28 @@
                     });
                 }
             }
-
-            const totalOperationalCost = totalAdmin + totalShipping + totalAds;
-            const profitMargin = totalRevenue > 0 ? ((netSettlementTotal / totalRevenue) * 100).toFixed(1) : 0;
-
-            document.getElementById('stat-revenue').innerText = formatUang(totalRevenue).replace('-','');
-            document.getElementById('stat-cost').innerText = formatUang(totalOperationalCost).replace('-','');
-            document.getElementById('stat-profit').innerText = formatUang(netSettlementTotal);
-            document.getElementById('stat-margin').innerText = `Margin: ${profitMargin}%`;
-
-            document.getElementById('val-admin').innerText = formatUang(totalAdmin).replace('-','');
-            document.getElementById('bar-admin').style.width = `${totalOperationalCost > 0 ? (totalAdmin/totalOperationalCost)*100 : 0}%`;
-            
-            document.getElementById('val-ads').innerText = formatUang(totalAds).replace('-','');
-            document.getElementById('bar-ads').style.width = `${totalOperationalCost > 0 ? (totalAds/totalOperationalCost)*100 : 0}%`;
-            
-            document.getElementById('val-shipping').innerText = formatUang(totalShipping).replace('-','');
-            document.getElementById('bar-shipping').style.width = `${totalOperationalCost > 0 ? (totalShipping/totalOperationalCost)*100 : 0}%`;
-
-            const platformContainer = document.getElementById('platform-stats');
-            platformContainer.innerHTML = `
-                <div class="p-4 rounded-lg border text-gray-800 bg-gray-100 border-gray-300 bg-opacity-50">
-                    <div class="flex justify-between items-center mb-2">
-                        <span class="font-bold">Total Transaksi</span>
-                        <span class="text-xs font-medium px-2 py-1 bg-white rounded-full shadow-sm">${transactions.length} trx</span>
-                    </div>
-                    <p class="text-xl font-bold">${formatUang(netSettlementTotal)}</p>
-                    <p class="text-xs mt-1 opacity-80">Total Penyelesaian Laba</p>
-                </div>
-            `;
         }
 
         function renderRiwayat() {
-            const tbody = document.getElementById('riwayat-body');
-            const table = document.getElementById('table-riwayat');
-            const emptyState = document.getElementById('empty-state');
-            const paginationControls = document.getElementById('pagination-controls');
-            const paginationInfo = document.getElementById('pagination-info');
-            const btnPrev = document.getElementById('btn-prev-page');
-            const btnNext = document.getElementById('btn-next-page');
-            
             const filteredTransactions = transactions.filter(t => 
-                t.product.toLowerCase().includes(searchQuery)
+                t.product && t.product.toLowerCase().includes(searchQuery)
             );
 
-            document.getElementById('data-count').innerText = `${filteredTransactions.length} Data`;
-
-            tbody.innerHTML = '';
+            setText('data-count', `${filteredTransactions.length} Data`);
 
             if (filteredTransactions.length === 0) {
-                table.classList.add('hidden');
-                emptyState.classList.remove('hidden');
-                if (paginationControls) paginationControls.classList.add('hidden');
+                setHTML('riwayat-body', `
+                    <tr>
+                        <td colspan="7" class="p-10 text-center text-gray-500">
+                            <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto mb-4 opacity-20"></i>
+                            <p>Belum ada data transaksi.</p>
+                        </td>
+                    </tr>
+                `);
+                addClass('pagination-controls', 'hidden');
+                if (window.lucide) window.lucide.createIcons();
             } else {
-                table.classList.remove('hidden');
-                emptyState.classList.add('hidden');
-                if (paginationControls) paginationControls.classList.remove('hidden');
+                removeClass('pagination-controls', 'hidden');
 
                 const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
                 if (currentPage > totalPages) currentPage = totalPages;
@@ -1001,37 +958,37 @@
                 const endIndex = Math.min(startIndex + itemsPerPage, filteredTransactions.length);
                 const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex);
 
-                if (paginationInfo) {
-                    paginationInfo.innerText = `Menampilkan ${startIndex + 1}-${endIndex} dari ${filteredTransactions.length} data`;
-                }
-
+                setText('pagination-info', `Menampilkan ${startIndex + 1}-${endIndex} dari ${filteredTransactions.length} data`);
+                
+                const btnPrev = document.getElementById('btn-prev-page');
                 if (btnPrev) btnPrev.disabled = currentPage === 1;
+                
+                const btnNext = document.getElementById('btn-next-page');
                 if (btnNext) btnNext.disabled = currentPage === totalPages;
 
+                let htmlContent = '';
                 paginatedTransactions.forEach(t => {
-                    const absRevenue = formatUang(t.details.totalPendapatan || t.revenue).replace('-','');
-                    const rawCost = Math.abs(t.details.totalBiaya || 0);
-                    const absCost = formatUang(rawCost).replace('-','');
-                    const rawRevenue = t.details.totalPendapatan || t.revenue || 0;
-                    const pctStr = formatPercent(rawCost, rawRevenue) || '0%';
-                    const settlement = t.netSettlement;
+                    const revenue = t.details?.totalPendapatan || t.revenue || 0;
+                    const cost = Math.abs(t.details?.totalBiaya || 0);
+                    const settlement = t.netSettlement || 0;
+                    const btnCopyId = `btn-copy-${t.id}`;
 
-                    tbody.innerHTML += `
+                    htmlContent += `
                         <tr class="hover:bg-gray-50 border-b border-gray-50 transition-colors">
                             <td class="p-4 text-sm text-gray-600 whitespace-nowrap">${t.date}</td>
                             <td class="p-4 text-sm text-gray-800 font-mono">
                                 <div class="flex items-center gap-2">
                                     <span>${t.product}</span>
-                                    <button onclick="copyToClipboard('${t.product}', this)" class="text-gray-400 hover:text-blue-600 transition-colors focus:outline-none" title="Salin ID Pesanan">
+                                    <button id="${btnCopyId}" onclick="copyToClipboard('${t.product}', '${btnCopyId}')" class="text-gray-400 hover:text-blue-600 transition-colors focus:outline-none" title="Salin ID">
                                         <i data-lucide="copy" class="w-4 h-4 pointer-events-none"></i>
                                     </button>
                                 </div>
                             </td>
-                            <td class="p-4 text-sm text-right font-medium text-gray-800">${absRevenue}</td>
-                            <td class="p-4 text-sm text-right text-gray-800">-${absCost}</td>
+                            <td class="p-4 text-sm text-right font-medium text-gray-800">${formatUang(revenue).replace('-','')}</td>
+                            <td class="p-4 text-sm text-right text-gray-800">-${formatUang(cost).replace('-','')}</td>
                             <td class="p-4 text-center">
                                 <span class="inline-block text-[11px] font-semibold bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full">
-                                    ${pctStr}
+                                    ${formatPercent(cost, revenue)}
                                 </span>
                             </td>
                             <td class="p-4 text-sm text-right">
@@ -1040,9 +997,7 @@
                                 </span>
                             </td>
                             <td class="p-4 text-center space-x-3 whitespace-nowrap">
-                                <button onclick="openModal(${t.id})" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors border border-blue-200 bg-blue-50 px-3 py-1 rounded">
-                                    Rincian
-                                </button>
+                                <button onclick="openModal(${t.id})" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors border border-blue-200 bg-blue-50 px-3 py-1 rounded">Rincian</button>
                                 <button onclick="deleteTransaction(${t.id})" class="text-gray-400 hover:text-red-600 transition-colors" title="Hapus Data">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
@@ -1050,22 +1005,26 @@
                         </tr>
                     `;
                 });
+                setHTML('riwayat-body', htmlContent);
+                if (window.lucide) window.lucide.createIcons();
             }
         }
 
-        window.deleteTransaction = (id) => {
-            transactions = transactions.filter(t => t.id !== id);
-            const filteredTransactions = transactions.filter(t => t.product.toLowerCase().includes(searchQuery));
-            const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-            if(currentPage > totalPages && totalPages > 0) {
-                currentPage = totalPages;
-            }
-            updateApp();
+        // --- Data Processor ---
+        window.prevPage = () => { if (currentPage > 1) { currentPage--; renderRiwayat(); } };
+        window.nextPage = () => {
+            const total = transactions.filter(t => t.product && t.product.toLowerCase().includes(searchQuery)).length;
+            if (currentPage < Math.ceil(total / itemsPerPage)) { currentPage++; renderRiwayat(); }
         };
 
-        // --- Process Parsed Data ---
+        window.deleteTransaction = (id) => {
+            transactions = transactions.filter(t => t.id !== id);
+            renderRiwayat();
+            renderDashboard();
+        };
+
         function processData(jsonData) {
-            if (jsonData.length === 0) {
+            if (!jsonData || jsonData.length === 0) {
                 alert('Data kosong.');
                 return;
             }
@@ -1074,18 +1033,12 @@
             for (let i = 0; i < jsonData.length; i++) {
                 const row = jsonData[i];
                 if (Array.isArray(row)) {
-                    const rowStr = row.map(c => String(c).toLowerCase()).join('|');
-                    if (rowStr.includes('id pesanan') || rowStr.includes('jumlah penyelesaian')) {
-                        headerIndex = i;
-                        break;
+                    if (row.map(c => String(c).toLowerCase()).join('|').includes('id pesanan')) {
+                        headerIndex = i; break;
                     }
                 } else if (typeof row === 'object') {
-                    const keysStr = Object.keys(row).map(c => String(c).toLowerCase()).join('|');
-                    const valsStr = Object.values(row).map(c => String(c).toLowerCase()).join('|');
-                    if (keysStr.includes('id pesanan') || keysStr.includes('jumlah penyelesaian') ||
-                        valsStr.includes('id pesanan') || valsStr.includes('jumlah penyelesaian')) {
-                        headerIndex = i;
-                        break;
+                    if (Object.keys(row).map(c => String(c).toLowerCase()).join('|').includes('id pesanan')) {
+                        headerIndex = i; break;
                     }
                 }
             }
@@ -1097,226 +1050,148 @@
                 if (Array.isArray(jsonData[headerIndex])) {
                     headers = jsonData[headerIndex].map(h => String(h).replace(/[\u200B-\u200D\uFEFF]/g, '').trim());
                     for (let i = headerIndex + 1; i < jsonData.length; i++) {
-                        const rowArr = jsonData[i];
-                        if (!rowArr || rowArr.length === 0) continue;
+                        if (!jsonData[i] || jsonData[i].length === 0) continue;
                         let obj = {};
-                        headers.forEach((headerName, colIndex) => {
-                            obj[headerName] = rowArr[colIndex];
-                        });
+                        headers.forEach((h, colIndex) => { obj[h] = jsonData[i][colIndex]; });
                         rowsToProcess.push(obj);
                     }
                 } else {
-                     const keys = Object.keys(jsonData[headerIndex]);
-                     const mappedKeys = {};
-                     keys.forEach(k => {
-                        const cleanKey = k.replace(/[\u200B-\u200D\uFEFF]/g, '').trim();
-                        mappedKeys[k] = cleanKey;
-                        headers.push(cleanKey);
-                     });
-                     
-                     for(let i=headerIndex; i < jsonData.length; i++){
-                         const rowObj = jsonData[i];
-                         let obj = {};
-                         keys.forEach(k => {
-                             obj[mappedKeys[k]] = rowObj[k];
-                         });
-                         rowsToProcess.push(obj);
-                     }
+                    const keys = Object.keys(jsonData[headerIndex]);
+                    keys.forEach(k => headers.push(k.replace(/[\u200B-\u200D\uFEFF]/g, '').trim()));
+                    for(let i=headerIndex; i < jsonData.length; i++){
+                        let obj = {};
+                        keys.forEach((k, idx) => { obj[headers[idx]] = jsonData[i][k]; });
+                        rowsToProcess.push(obj);
+                    }
                 }
             } else {
-                alert('Gagal menemukan baris header (yang mengandung "ID Pesanan"). Pastikan format sesuai.');
+                alert('Gagal menemukan baris header (yang mengandung "ID Pesanan").');
                 return;
             }
 
-            const importedTransactions = rowsToProcess.map((row, index) => {
-                const getExactVal = (keyName) => {
+            const newTx = rowsToProcess.map((row, index) => {
+                const getVal = (keyName) => {
                     const searchKey = keyName.replace(/[\u200B-\u200D\uFEFF]/g, '').trim().toLowerCase();
                     const key = Object.keys(row).find(k => k.replace(/[\u200B-\u200D\uFEFF]/g, '').trim().toLowerCase() === searchKey);
                     return key ? row[key] : 0;
                 };
 
-                const rawDate = getExactVal('Waktu pemesanan') || getExactVal('Waktu pembayaran pesanan');
-                let parsedDate = rawDate; 
-                
-                if (typeof rawDate === 'number') {
-                    const dateObj = new Date((rawDate - (25567 + 2)) * 86400 * 1000);
-                    if(!isNaN(dateObj)) {
-                        const pad = n => n.toString().padStart(2, '0');
-                        parsedDate = `${pad(dateObj.getDate())}-${pad(dateObj.getMonth()+1)}-${dateObj.getFullYear()} ${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}:${pad(dateObj.getSeconds())}`;
-                    }
+                let pDate = getVal('Waktu pemesanan') || getVal('Waktu pembayaran pesanan');
+                if (typeof pDate === 'number') {
+                    const d = new Date((pDate - (25567 + 2)) * 86400 * 1000);
+                    if(!isNaN(d)) pDate = `${d.getDate().toString().padStart(2,'0')}-${(d.getMonth()+1).toString().padStart(2,'0')}-${d.getFullYear()} ${d.getHours().toString().padStart(2,'0')}:${d.getMinutes().toString().padStart(2,'0')}:${d.getSeconds().toString().padStart(2,'0')}`;
                 }
 
-                // Ekstraksi lengkap sesuai file Tiktok 
-                const rawDetails = {
-                    totalPendapatan: cleanCurrency(getExactVal('Total Pendapatan')),
-                    subtotalSebelumDiskon: cleanCurrency(getExactVal('Subtotal sebelum diskon')),
-                    diskonPenjual: cleanCurrency(getExactVal('Diskon penjual')),
-                    biayaProdukHorison: cleanCurrency(getExactVal('Biaya produk sesuai jarak dari Program Horison+')),
-                    subtotalRefundSebelum: cleanCurrency(getExactVal('Subtotal pengembalian dana sebelum diskon penjual')),
-                    refundDiskonPenjual: cleanCurrency(getExactVal('Pengembalian dana diskon penjual')),
-                    
-                    totalBiaya: cleanCurrency(getExactVal('Total Biaya')),
-                    
-                    biayaKomisiPlatform: cleanCurrency(getExactVal('Biaya komisi platform')),
-                    biayaKomisiSebelumDiskon: cleanCurrency(getExactVal('Biaya komisi sebelum diskon')),
-                    diskonBelanjaIklan: cleanCurrency(getExactVal('Diskon (dari belanja iklan)')),
-                    diskonKomisiLainnya: cleanCurrency(getExactVal('Diskon komisi lainnya')),
-
-                    biayaLayananPreOrder: cleanCurrency(getExactVal('Biaya layanan pre-order')),
-                    biayaLayananMall: cleanCurrency(getExactVal('Biaya layanan Mall')),
-                    biayaPembayaran: cleanCurrency(getExactVal('Biaya Pembayaran')),
-                    ccInstallment: cleanCurrency(getExactVal('Credit card installment - Handling fee')),
-                    
-                    ongkir: cleanCurrency(getExactVal('Ongkir')),
-                    ongkirDitalangi: cleanCurrency(getExactVal('Ongkir yang ditalangi penyedia jasa logistik')),
-                    ongkirPlatform: cleanCurrency(getExactVal('Ongkir yang ditanggung platform')),
-                    ongkirPembeli: cleanCurrency(getExactVal('Ongkir yang ditanggung pembeli')),
-                    refundOngkirPembeli: cleanCurrency(getExactVal('Pengembalian ongkir yang ditanggung pembeli')),
-                    ongkirReturPembeli: cleanCurrency(getExactVal('Ongkir pengembalian barang (yang ditanggung pembeli)')),
-                    subsidiOngkir: cleanCurrency(getExactVal('Subsidi ongkir')),
-                    biayaKirimHorison: cleanCurrency(getExactVal('Biaya pengiriman sesuai jarak dari Program Horison+')),
-                    biayaLayananLogistik: cleanCurrency(getExactVal('Biaya layanan logistik')),
-                    
-                    komisiAfiliasi: cleanCurrency(getExactVal('Komisi Afiliasi')),
-                    komisiMitraAfiliasi: cleanCurrency(getExactVal('Komisi mitra afiliasi')),
-                    komisiIklanTokoAfiliasi: cleanCurrency(getExactVal('Komisi Iklan Toko afiliasi')),
-                    depositKomisiAfiliasi: cleanCurrency(getExactVal('Deposit komisi afiliasi')),
-                    refundKomisiAfiliasi: cleanCurrency(getExactVal('Pengembalian dana komisi afiliasi')),
-                    komisiIklanTokoMitra: cleanCurrency(getExactVal('Komisi iklan toko Mitra Afiliasi')),
-
-                    bebasOngkir: cleanCurrency(getExactVal('Biaya layanan Program Bebas Ongkir')),
-                    komisiDinamis: cleanCurrency(getExactVal('Komisi dinamis')),
-                    layananCashback: cleanCurrency(getExactVal('Biaya layanan cashback bonus')),
-                    layananLive: cleanCurrency(getExactVal('Biaya layanan Khusus LIVE')),
-                    aksesEksklusif: cleanCurrency(getExactVal('Biaya akses keuntungan eksklusif')),
-                    biayaPemrosesan: cleanCurrency(getExactVal('Biaya pemrosesan pesanan')),
-                    
-                    iklanGMVMax: cleanCurrency(getExactVal('Biaya iklan GMV Max')) || cleanCurrency(getExactVal('Biaya Iklan GMV Max')),
-                    voucherGMVMax: cleanCurrency(getExactVal('Voucher GMV Max')),
-
-                    penyesuaian: cleanCurrency(getExactVal('Penyesuaian')),
-                    penyelesaian: cleanCurrency(getExactVal('Jumlah penyelesaian pembayaran'))
+                const d = {
+                    totalPendapatan: cleanCurrency(getVal('Total Pendapatan')),
+                    subtotalSebelumDiskon: cleanCurrency(getVal('Subtotal sebelum diskon')),
+                    diskonPenjual: cleanCurrency(getVal('Diskon penjual')),
+                    biayaProdukHorison: cleanCurrency(getVal('Biaya produk sesuai jarak dari Program Horison+')),
+                    subtotalRefundSebelum: cleanCurrency(getVal('Subtotal pengembalian dana sebelum diskon penjual')),
+                    refundDiskonPenjual: cleanCurrency(getVal('Pengembalian dana diskon penjual')),
+                    totalBiaya: cleanCurrency(getVal('Total Biaya')),
+                    biayaKomisiPlatform: cleanCurrency(getVal('Biaya komisi platform')),
+                    biayaKomisiSebelumDiskon: cleanCurrency(getVal('Biaya komisi sebelum diskon')),
+                    diskonBelanjaIklan: cleanCurrency(getVal('Diskon (dari belanja iklan)')),
+                    diskonKomisiLainnya: cleanCurrency(getVal('Diskon komisi lainnya')),
+                    biayaLayananPreOrder: cleanCurrency(getVal('Biaya layanan pre-order')),
+                    biayaLayananMall: cleanCurrency(getVal('Biaya layanan Mall')),
+                    biayaPembayaran: cleanCurrency(getVal('Biaya Pembayaran')),
+                    ccInstallment: cleanCurrency(getVal('Credit card installment - Handling fee')),
+                    ongkir: cleanCurrency(getVal('Ongkir')),
+                    ongkirDitalangi: cleanCurrency(getVal('Ongkir yang ditalangi penyedia jasa logistik')),
+                    ongkirPlatform: cleanCurrency(getVal('Ongkir yang ditanggung platform')),
+                    ongkirPembeli: cleanCurrency(getVal('Ongkir yang ditanggung pembeli')),
+                    refundOngkirPembeli: cleanCurrency(getVal('Pengembalian ongkir yang ditanggung pembeli')),
+                    ongkirReturPembeli: cleanCurrency(getVal('Ongkir pengembalian barang (yang ditanggung pembeli)')),
+                    subsidiOngkir: cleanCurrency(getVal('Subsidi ongkir')),
+                    biayaKirimHorison: cleanCurrency(getVal('Biaya pengiriman sesuai jarak dari Program Horison+')),
+                    biayaLayananLogistik: cleanCurrency(getVal('Biaya layanan logistik')),
+                    komisiAfiliasi: cleanCurrency(getVal('Komisi Afiliasi')),
+                    komisiMitraAfiliasi: cleanCurrency(getVal('Komisi mitra afiliasi')),
+                    komisiIklanTokoAfiliasi: cleanCurrency(getVal('Komisi Iklan Toko afiliasi')),
+                    depositKomisiAfiliasi: cleanCurrency(getVal('Deposit komisi afiliasi')),
+                    refundKomisiAfiliasi: cleanCurrency(getVal('Pengembalian dana komisi afiliasi')),
+                    komisiIklanTokoMitra: cleanCurrency(getVal('Komisi iklan toko Mitra Afiliasi')),
+                    bebasOngkir: cleanCurrency(getVal('Biaya layanan Program Bebas Ongkir')),
+                    komisiDinamis: cleanCurrency(getVal('Komisi dinamis')),
+                    layananCashback: cleanCurrency(getVal('Biaya layanan cashback bonus')),
+                    layananLive: cleanCurrency(getVal('Biaya layanan Khusus LIVE')),
+                    aksesEksklusif: cleanCurrency(getVal('Biaya akses keuntungan eksklusif')),
+                    biayaPemrosesan: cleanCurrency(getVal('Biaya pemrosesan pesanan')),
+                    iklanGMVMax: cleanCurrency(getVal('Biaya iklan GMV Max')) || cleanCurrency(getVal('Biaya Iklan GMV Max')),
+                    voucherGMVMax: cleanCurrency(getVal('Voucher GMV Max')),
+                    penyesuaian: cleanCurrency(getVal('Penyesuaian')),
+                    penyelesaian: cleanCurrency(getVal('Jumlah penyelesaian pembayaran'))
                 };
 
-                const revenueVal = rawDetails.subtotalSebelumDiskon || rawDetails.totalPendapatan;
-                
-                // Grouping kasar untuk Dashboard atas
-                const adminVal = 
-                    Math.abs(rawDetails.biayaKomisiPlatform) + 
-                    Math.abs(rawDetails.biayaPembayaran) + 
-                    Math.abs(rawDetails.biayaLayananMall) +
-                    Math.abs(rawDetails.biayaPemrosesan) +
-                    Math.abs(rawDetails.komisiDinamis) +
-                    Math.abs(rawDetails.layananCashback) +
-                    Math.abs(rawDetails.aksesEksklusif);
-
-                const adsVal = 
-                    Math.abs(rawDetails.komisiAfiliasi) +
-                    Math.abs(rawDetails.layananLive) +
-                    Math.abs(rawDetails.iklanGMVMax);
-
-                const shippingVal = Math.abs(rawDetails.ongkir) + Math.abs(rawDetails.bebasOngkir);
-                const idPesanan = getExactVal('ID Pesanan/Penyesuaian') || getExactVal('ID Pesanan') || (headers.length > 0 ? row[headers[0]] : null);
+                const rev = d.subtotalSebelumDiskon || d.totalPendapatan;
+                const admin = Math.abs(d.biayaKomisiPlatform) + Math.abs(d.biayaPembayaran) + Math.abs(d.biayaLayananMall) + Math.abs(d.biayaPemrosesan) + Math.abs(d.komisiDinamis) + Math.abs(d.layananCashback) + Math.abs(d.aksesEksklusif);
+                const ads = Math.abs(d.komisiAfiliasi) + Math.abs(d.layananLive) + Math.abs(d.iklanGMVMax);
+                const ship = Math.abs(d.ongkir) + Math.abs(d.bebasOngkir);
 
                 return {
                     id: Date.now() + index,
-                    date: parsedDate,
-                    product: idPesanan,
-                    revenue: revenueVal,
-                    hpp: 0, 
-                    adminFee: adminVal,
-                    shipping: shippingVal,
-                    ads: adsVal,
-                    packing: 0,
-                    netSettlement: rawDetails.penyelesaian,
-                    details: rawDetails 
+                    date: pDate,
+                    product: getVal('ID Pesanan/Penyesuaian') || getVal('ID Pesanan') || (headers.length > 0 ? row[headers[0]] : null),
+                    revenue: rev,
+                    hpp: 0, adminFee: admin, shipping: ship, ads: ads, packing: 0,
+                    netSettlement: d.penyelesaian,
+                    details: d
                 };
-            });
+            }).filter(t => t.product && t.product.toString().trim().length > 5 && !t.product.toString().toLowerCase().includes('total'));
 
-            const validTransactions = importedTransactions.filter((t, idx) => {
-                const idStr = t.product ? t.product.toString().trim() : '';
-                return idStr.length > 5 && !idStr.toLowerCase().includes('total');
-            });
-
-            if (validTransactions.length === 0) {
-                 alert('File berhasil dibaca, tetapi tidak ada pesanan yang terdeteksi. Pastikan file bukan berupa draf kosong.');
-                 return;
-            }
-
-            transactions = [...validTransactions, ...transactions];
-            currentPage = 1;
-            updateApp();
-            
-            alert(`Berhasil mengekstrak ${validTransactions.length} baris data pesanan!`);
-            switchTab('riwayat');
-        }
-
-        // --- Handle Fetch CSV from URL ---
-        function fetchCSVFromURL() {
-            const urlInput = document.getElementById('csv-url-input').value.trim();
-            if (!urlInput) {
-                alert('Silakan masukkan URL CSV terlebih dahulu.');
+            if (newTx.length === 0) {
+                alert('Tidak ada pesanan valid yang terdeteksi.');
                 return;
             }
+
+            transactions = [...newTx, ...transactions];
+            currentPage = 1;
+            renderDashboard();
+            renderRiwayat();
+            switchTab('riwayat');
+            alert(`Berhasil mengekstrak ${newTx.length} baris data!`);
+        }
+
+        window.fetchCSVFromURL = () => {
+            const urlInput = document.getElementById('csv-url-input').value.trim();
+            if (!urlInput) { alert('Masukkan URL CSV!'); return; }
+            if (!window.Papa) { alert('Library CSV belum dimuat, tunggu sebentar.'); return; }
 
             const btn = document.getElementById('btn-fetch-csv');
             const loading = document.getElementById('loading-indicator');
-
-            btn.classList.add('hidden');
-            loading.classList.remove('hidden');
+            if (btn) btn.classList.add('hidden'); 
+            if (loading) loading.classList.remove('hidden');
 
             Papa.parse(urlInput, {
-                download: true,
-                header: false,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    btn.classList.remove('hidden');
-                    loading.classList.add('hidden');
-
-                    try {
-                        processData(results.data);
-                    } catch (error) {
-                        console.error("Gagal memproses data CSV dari URL:", error);
-                        alert("Terjadi kesalahan saat mengekstrak data dari CSV. Pastikan struktur kolom sesuai dengan yang diharapkan.");
-                    }
+                download: true, header: false, skipEmptyLines: true,
+                complete: function(res) {
+                    if (btn) btn.classList.remove('hidden'); 
+                    if (loading) loading.classList.add('hidden');
+                    processData(res.data);
                 },
-                error: function(error) {
-                    btn.classList.remove('hidden');
-                    loading.classList.add('hidden');
-                    console.error("Gagal menarik CSV dari URL:", error);
-                    alert("Gagal menarik data dari URL. Pastikan URL tersebut dapat diakses secara publik dan berformat CSV.");
+                error: function(err) {
+                    if (btn) btn.classList.remove('hidden'); 
+                    if (loading) loading.classList.add('hidden');
+                    alert("Gagal menarik data dari URL. Pastikan URL publik dan format CSV.");
                 }
             });
-        }
+        };
 
-        // --- Handle Upload Excel ---
         document.getElementById('excel-upload').addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) return;
-
-            if (!window.XLSX) {
-                alert('Library pembaca Excel sedang dimuat, silakan coba beberapa saat lagi.');
-                return;
-            }
+            if (!window.XLSX) { alert('Library Excel belum dimuat.'); return; }
 
             const reader = new FileReader();
             reader.onload = (evt) => {
                 try {
-                    const data = evt.target.result;
-                    const workbook = window.XLSX.read(data, { type: 'binary' });
-
-                    let targetSheetName = workbook.SheetNames.find(name => name.toLowerCase().includes('detail pesanan'));
-                    if (!targetSheetName) targetSheetName = workbook.SheetNames[0]; 
-
-                    const worksheet = workbook.Sheets[targetSheetName];
-                    const rawData = window.XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-
-                    processData(rawData);
-                    e.target.value = ''; // Reset input
-                } catch (error) {
-                    console.error("Gagal memproses file:", error);
-                    alert("Terjadi kesalahan saat mengekstrak data. Pastikan format file tidak dimodifikasi secara manual.");
-                }
+                    const workbook = XLSX.read(evt.target.result, { type: 'binary' });
+                    let sheetName = workbook.SheetNames.find(n => n.toLowerCase().includes('detail pesanan')) || workbook.SheetNames[0];
+                    processData(XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 }));
+                    e.target.value = '';
+                } catch (error) { alert("Gagal memproses file Excel."); }
             };
             reader.readAsBinaryString(file);
         });
