@@ -940,11 +940,11 @@
                         </td>
                     </tr>
                 `);
-                const btnNext = document.getElementById('btn-next-page');
-                if (btnNext) btnNext.disabled = currentPage === totalPages;
+                if (window.lucide) window.lucide.createIcons();
+            } else {
 
                 let htmlContent = '';
-                paginatedTransactions.forEach(t => {
+                filteredTransactions.forEach(t => {
                     const revenue = t.details?.totalPendapatan || t.revenue || 0;
                     const cost = Math.abs(t.details?.totalBiaya || 0);
                     const settlement = t.netSettlement || 0;
