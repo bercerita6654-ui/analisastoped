@@ -245,7 +245,7 @@
                                 <th class="p-4 font-semibold text-right whitespace-nowrap">Total (AIO System)</th>
                                 <th class="p-4 font-semibold text-right whitespace-nowrap">Total Biaya</th>
                                 <th class="p-4 font-semibold text-center whitespace-nowrap">Persentase</th>
-                                <th class="p-4 font-semibold text-right whitespace-nowrap">Jumlah penyelesaian pembayaran</th>
+                                <th class="p-4 font-semibold text-right whitespace-nowrap">Jumlah penyelesaian</th>
                                 <th class="p-4 font-semibold text-center whitespace-nowrap">Aksi</th>
                             </tr>
                         </thead>
@@ -259,19 +259,6 @@
                             </tr>
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Paginasi -->
-                <div id="pagination-controls" class="px-6 py-4 border-t border-gray-100 flex justify-between items-center bg-gray-50 hidden">
-                    <span id="pagination-info" class="text-sm text-gray-600">Menampilkan 0-0 dari 0 data</span>
-                    <div class="flex space-x-2">
-                        <button id="btn-prev-page" onclick="prevPage()" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium text-gray-700 transition-colors">
-                            Sebelumnya
-                        </button>
-                        <button id="btn-next-page" onclick="nextPage()" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium text-gray-700 transition-colors">
-                            Selanjutnya
-                        </button>
-                    </div>
                 </div>
             </div>
         </div>
@@ -573,9 +560,6 @@
         let transactions = [];
         let searchQuery = ''; 
         
-        // Paginasi & Top Cost State
-        let currentPage = 1;
-        const itemsPerPage = 100;
         let topCostsSortBy = 'nominal'; 
 
         // --- Init ---
@@ -591,7 +575,6 @@
 
             document.getElementById('search-input').addEventListener('input', (e) => {
                 searchQuery = e.target.value.toLowerCase();
-                currentPage = 1; 
                 renderRiwayat(); 
             });
 
@@ -636,7 +619,8 @@
             }
         };
 
-        window.copyToClipboard = (text, btnId) => {
+        window.copyToClipboard = (text, btnId, event) => {
+            if(event) event.stopPropagation(); // Mencegah klik menyebar ke buka modal
             const textarea = document.createElement('textarea');
             textarea.value = text;
             textarea.style.position = 'fixed';
@@ -945,29 +929,11 @@
                         </td>
                     </tr>
                 `);
-                addClass('pagination-controls', 'hidden');
                 if (window.lucide) window.lucide.createIcons();
             } else {
-                removeClass('pagination-controls', 'hidden');
-
-                const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
-                if (currentPage > totalPages) currentPage = totalPages;
-                if (currentPage < 1) currentPage = 1;
-
-                const startIndex = (currentPage - 1) * itemsPerPage;
-                const endIndex = Math.min(startIndex + itemsPerPage, filteredTransactions.length);
-                const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex);
-
-                setText('pagination-info', `Menampilkan ${startIndex + 1}-${endIndex} dari ${filteredTransactions.length} data`);
-                
-                const btnPrev = document.getElementById('btn-prev-page');
-                if (btnPrev) btnPrev.disabled = currentPage === 1;
-                
-                const btnNext = document.getElementById('btn-next-page');
-                if (btnNext) btnNext.disabled = currentPage === totalPages;
 
                 let htmlContent = '';
-                paginatedTransactions.forEach(t => {
+                filteredTransactions.forEach(t => {
                     const revenue = t.details?.totalPendapatan || t.revenue || 0;
                     const cost = Math.abs(t.details?.totalBiaya || 0);
                     const settlement = t.netSettlement || 0;
@@ -976,10 +942,12 @@
                     htmlContent += `
                         <tr class="hover:bg-gray-50 border-b border-gray-50 transition-colors">
                             <td class="p-4 text-sm text-gray-600 whitespace-nowrap">${t.date}</td>
-                            <td class="p-4 text-sm text-gray-800 font-mono">
+                            <td class="p-4 text-sm font-mono">
                                 <div class="flex items-center gap-2">
-                                    <span>${t.product}</span>
-                                    <button id="${btnCopyId}" onclick="copyToClipboard('${t.product}', '${btnCopyId}')" class="text-gray-400 hover:text-blue-600 transition-colors focus:outline-none" title="Salin ID">
+                                    <button onclick="openModal(${t.id})" class="text-blue-600 hover:text-blue-800 hover:underline font-semibold focus:outline-none" title="Lihat Rincian ${t.product}">
+                                        ${t.product}
+                                    </button>
+                                    <button id="${btnCopyId}" onclick="copyToClipboard('${t.product}', '${btnCopyId}', event)" class="text-gray-400 hover:text-blue-600 transition-colors focus:outline-none" title="Salin ID">
                                         <i data-lucide="copy" class="w-4 h-4 pointer-events-none"></i>
                                     </button>
                                 </div>
@@ -996,9 +964,8 @@
                                     ${formatUang(settlement)}
                                 </span>
                             </td>
-                            <td class="p-4 text-center space-x-3 whitespace-nowrap">
-                                <button onclick="openModal(${t.id})" class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors border border-blue-200 bg-blue-50 px-3 py-1 rounded">Rincian</button>
-                                <button onclick="deleteTransaction(${t.id})" class="text-gray-400 hover:text-red-600 transition-colors" title="Hapus Data">
+                            <td class="p-4 text-center whitespace-nowrap">
+                                <button onclick="deleteTransaction(${t.id})" class="text-gray-400 hover:text-red-600 transition-colors p-2 rounded hover:bg-red-50" title="Hapus Data">
                                     <i data-lucide="trash-2" class="w-4 h-4"></i>
                                 </button>
                             </td>
@@ -1011,12 +978,6 @@
         }
 
         // --- Data Processor ---
-        window.prevPage = () => { if (currentPage > 1) { currentPage--; renderRiwayat(); } };
-        window.nextPage = () => {
-            const total = transactions.filter(t => t.product && t.product.toLowerCase().includes(searchQuery)).length;
-            if (currentPage < Math.ceil(total / itemsPerPage)) { currentPage++; renderRiwayat(); }
-        };
-
         window.deleteTransaction = (id) => {
             transactions = transactions.filter(t => t.id !== id);
             renderRiwayat();
@@ -1147,7 +1108,6 @@
             }
 
             transactions = [...newTx, ...transactions];
-            currentPage = 1;
             renderDashboard();
             renderRiwayat();
             switchTab('riwayat');
