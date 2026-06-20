@@ -926,7 +926,7 @@
 
         function renderRiwayat() {
             const filteredTransactions = transactions.filter(t => 
-                t.product && t.product.toLowerCase().includes(searchQuery)
+                t.product && t.product.toString().toLowerCase().includes(searchQuery)
             );
 
             setText('data-count', `${filteredTransactions.length} Data`);
