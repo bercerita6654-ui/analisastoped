@@ -244,7 +244,7 @@
                                 <th class="p-4 font-semibold">ID Pesanan</th>
                                 <th class="p-4 font-semibold text-right whitespace-nowrap">Total (AIO System)</th>
                                 <th class="p-4 font-semibold text-right whitespace-nowrap">Total Biaya</th>
-                                <th class="p-4 font-semibold text-center whitespace-nowrap">Persentase</th>
+                                <th class="p-4 font-semibold text-center whitespace-nowrap" title="Persentase Potongan (Tanpa Ongkir & Pemrosesan)">Persentase %</th>
                                 <th class="p-4 font-semibold text-right whitespace-nowrap">Jumlah penyelesaian</th>
                                 <th class="p-4 font-semibold text-center whitespace-nowrap">Aksi</th>
                             </tr>
@@ -260,6 +260,20 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Paginasi Aktif Kembali -->
+                <div id="pagination-controls" class="px-6 py-4 border-t border-gray-100 flex justify-between items-center bg-gray-50 hidden">
+                    <span id="pagination-info" class="text-sm text-gray-600">Menampilkan 0-0 dari 0 data</span>
+                    <div class="flex space-x-2">
+                        <button id="btn-prev-page" onclick="prevPage()" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium text-gray-700 transition-colors">
+                            Sebelumnya
+                        </button>
+                        <button id="btn-next-page" onclick="nextPage()" class="px-3 py-1.5 bg-white border border-gray-300 rounded hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed text-sm font-medium text-gray-700 transition-colors">
+                            Selanjutnya
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>
@@ -282,7 +296,7 @@
                     <button id="sort-by-nominal" onclick="updateTopCostsList('nominal')" class="px-3 py-1 text-sm rounded-md bg-blue-50 text-blue-600 font-medium transition-colors shadow-sm">
                         Nominal (Rp)
                     </button>
-                    <button id="sort-by-percent" onclick="updateTopCostsList('percent')" class="px-3 py-1 text-sm rounded-md text-gray-600 hover:text-gray-900 font-medium transition-colors">
+                    <button id="sort-by-percent" onclick="updateTopCostsList('percent')" class="px-3 py-1 text-sm rounded-md text-gray-600 hover:text-gray-900 font-medium transition-colors" title="Persentase (Tanpa Ongkir & Pemrosesan)">
                         Persentase (%)
                     </button>
                 </div>
@@ -346,11 +360,11 @@
                 <!-- Section Biaya -->
                 <div>
                     <div class="flex justify-between items-center font-bold text-gray-900 mb-3 bg-red-50 p-2 rounded-lg border border-red-100">
-                        <span class="flex items-center text-red-800">
+                        <div class="flex items-center text-red-800">
                             Total Biaya 
-                            <span id="pct-total-biaya" class="ml-2 text-xs text-red-600 bg-red-100 px-2 py-0.5 rounded-full border border-red-200">0%</span>
-                        </span>
-                        <span id="modal-total-biaya" class="font-bold">-Rp 0</span>
+                            <span id="pct-total-biaya" class="ml-2 text-[10px] text-red-600 bg-red-100 px-2 py-0.5 rounded-full border border-red-200" title="(Tanpa Ongkir & Pemrosesan)">0%</span>
+                        </div>
+                        <span id="modal-total-biaya" class="font-bold text-red-600">-Rp 0</span>
                     </div>
 
                     <div class="pl-2 space-y-2.5">
@@ -406,12 +420,12 @@
                             </div>
                         </div>
 
-                        <!-- Hierarki Ongkir -->
+                        <!-- Hierarki Ongkir (PERSEN DIHILANGKAN SESUAI REQUEST) -->
                         <div id="row-ongkir-group" class="border-b border-gray-50 pb-2">
                             <div class="flex justify-between items-center mb-1">
                                 <span class="flex items-center font-medium text-gray-800">
                                     Ongkir
-                                    <span id="pct-ongkir" class="ml-2 text-[10px] text-gray-500 bg-gray-100 px-1.5 py-0.5 rounded">0%</span>
+                                    <!-- Badge persen dihilangkan -->
                                 </span>
                                 <span id="modal-ongkir-total" class="font-medium">-Rp 0</span>
                             </div>
@@ -504,8 +518,10 @@
                             <span class="flex items-center text-gray-700">Biaya akses keuntungan eksklusif <span id="pct-akses" class="ml-2 text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">0%</span></span>
                             <span id="modal-akses" class="font-medium">-Rp 0</span>
                         </div>
+                        
+                        <!-- Biaya Pemrosesan (PERSEN DIHILANGKAN SESUAI REQUEST) -->
                         <div class="flex justify-between items-center border-b border-gray-50 pb-1" id="row-pemrosesan">
-                            <span class="flex items-center text-gray-700">Biaya pemrosesan pesanan <span id="pct-pemrosesan" class="ml-2 text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded">0%</span></span>
+                            <span class="flex items-center text-gray-700">Biaya pemrosesan pesanan</span>
                             <span id="modal-pemrosesan" class="font-medium">-Rp 0</span>
                         </div>
 
@@ -534,7 +550,7 @@
                     <hr class="border-gray-200 border-dashed my-3">
                     <div class="flex justify-between items-center font-bold text-gray-900 mb-2">
                         <span>Penyesuaian</span>
-                        <span id="modal-penyesuaian" class="font-medium">Rp 0</span>
+                        <span id="modal-penyesuaian" class="font-medium text-orange-500">Rp 0</span>
                     </div>
                 </div>
 
@@ -559,6 +575,10 @@
         // --- State Application ---
         let transactions = [];
         let searchQuery = ''; 
+        
+        // Paginasi & Top Cost State
+        let currentPage = 1;
+        const itemsPerPage = 100;
         let topCostsSortBy = 'nominal'; 
 
         // --- Init ---
@@ -574,6 +594,7 @@
 
             document.getElementById('search-input').addEventListener('input', (e) => {
                 searchQuery = e.target.value.toLowerCase();
+                currentPage = 1; 
                 renderRiwayat(); 
             });
 
@@ -600,9 +621,9 @@
             if (el) {
                 el.innerText = formatUang(value);
                 if (value < 0) {
-                    el.style.color = '#ef4444'; // Merah (text-red-500)
+                    el.style.color = '#ef4444'; // Merah
                 } else {
-                    el.style.color = ''; // Reset ke default
+                    el.style.color = ''; 
                 }
             }
         };
@@ -710,8 +731,15 @@
                 if(sortBy === 'nominal') {
                     return costB - costA;
                 } else {
-                    const pctA = getPercentValue(costA, revA);
-                    const pctB = getPercentValue(costB, revB);
+                    // Sorting persentase dengan mengecualikan Ongkir & Pemrosesan
+                    const exclA = Math.abs(a.details.ongkir || 0) + Math.abs(a.details.biayaPemrosesan || 0);
+                    const effA = Math.max(0, costA - exclA);
+                    const pctA = getPercentValue(effA, revA);
+
+                    const exclB = Math.abs(b.details.ongkir || 0) + Math.abs(b.details.biayaPemrosesan || 0);
+                    const effB = Math.max(0, costB - exclB);
+                    const pctB = getPercentValue(effB, revB);
+
                     return pctB - pctA;
                 }
             });
@@ -722,10 +750,15 @@
             if (listContainer) {
                 listContainer.innerHTML = '';
                 top10.forEach((tx, index) => {
-                    const cost = Math.abs(tx.details.totalBiaya || 0);
+                    const rawCost = Math.abs(tx.details.totalBiaya || 0);
                     const revenue = tx.details.totalPendapatan || tx.revenue || 0;
-                    const pct = formatPercent(cost, revenue);
-                    const absCostStr = formatUang(cost).replace('-', '');
+                    
+                    // Hitung persentase tanpa ongkir dan pemrosesan
+                    const excludedCost = Math.abs(tx.details.ongkir || 0) + Math.abs(tx.details.biayaPemrosesan || 0);
+                    const effectiveCost = Math.max(0, rawCost - excludedCost);
+                    
+                    const pct = formatPercent(effectiveCost, revenue);
+                    const absCostStr = formatUang(rawCost).replace('-', '');
 
                     listContainer.innerHTML += `
                         <div class="flex items-center justify-between p-4 mb-2 bg-white rounded-lg shadow-sm border border-gray-200 hover:border-blue-300 transition-colors">
@@ -740,7 +773,7 @@
                             </div>
                             <div class="text-right w-1/3">
                                 <span class="block font-bold text-red-600 text-sm">-${absCostStr}</span>
-                                <span class="inline-block mt-1 text-[10px] font-semibold ${sortBy === 'percent' ? 'bg-red-100 text-red-700' : 'bg-red-50 text-red-500'} border border-red-100 px-2 py-0.5 rounded-full">${pct} potongan</span>
+                                <span class="inline-block mt-1 text-[10px] font-semibold ${sortBy === 'percent' ? 'bg-red-100 text-red-700' : 'bg-red-50 text-red-500'} border border-red-100 px-2 py-0.5 rounded-full" title="Persentase dihitung tanpa Ongkir & Pemrosesan">${pct} potongan</span>
                             </div>
                         </div>
                     `;
@@ -784,7 +817,10 @@
 
             // Biaya
             setCurrencyText('modal-total-biaya', details.totalBiaya);
-            setText('pct-total-biaya', formatPercent(details.totalBiaya, revenue));
+            // Modal overall persentase juga kita eksklusikan ongkir & pemrosesan agar selaras
+            const excludedCost = Math.abs(details.ongkir || 0) + Math.abs(details.biayaPemrosesan || 0);
+            const effectiveCost = Math.max(0, Math.abs(details.totalBiaya || 0) - excludedCost);
+            setText('pct-total-biaya', formatPercent(effectiveCost, revenue));
             
             // Komisi
             const totalKomisiPlatform = (details.biayaKomisiSebelumDiskon || 0) + (details.diskonBelanjaIklan || 0) + (details.diskonKomisiLainnya || 0) || details.biayaKomisiPlatform;
@@ -805,9 +841,8 @@
             assignRow('row-cc-installment', 'modal-cc-installment', null, details.ccInstallment);
             toggleRow('row-payment-group', totalPayment !== 0 || details.ccInstallment !== 0);
 
-            // Ongkir
+            // Ongkir (pctId diset null)
             setCurrencyText('modal-ongkir-total', details.ongkir);
-            setText('pct-ongkir', formatPercent(details.ongkir, revenue));
             assignRow('row-ongkir-ditalangi', 'modal-ongkir-ditalangi', null, details.ongkirDitalangi);
             assignRow('row-ongkir-platform', 'modal-ongkir-platform', null, details.ongkirPlatform);
             assignRow('row-ongkir-pembeli', 'modal-ongkir-pembeli', null, details.ongkirPembeli);
@@ -833,7 +868,9 @@
             assignRow('row-cashback', 'modal-cashback', 'pct-cashback', details.layananCashback);
             assignRow('row-live', 'modal-live', 'pct-live', details.layananLive);
             assignRow('row-akses', 'modal-akses', 'pct-akses', details.aksesEksklusif);
-            assignRow('row-pemrosesan', 'modal-pemrosesan', 'pct-pemrosesan', details.biayaPemrosesan);
+            
+            // Pemrosesan (pctId diset null)
+            assignRow('row-pemrosesan', 'modal-pemrosesan', null, details.biayaPemrosesan);
 
             // GMV Max
             setCurrencyText('modal-gmvmax', details.iklanGMVMax);
@@ -924,6 +961,25 @@
             }
         }
 
+        // --- Paginasi Logic Update ---
+        window.prevPage = () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderRiwayat();
+            }
+        };
+
+        window.nextPage = () => {
+            const filteredTransactions = transactions.filter(t => 
+                t.product && t.product.toString().toLowerCase().includes(searchQuery)
+            );
+            const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderRiwayat();
+            }
+        };
+
         function renderRiwayat() {
             const filteredTransactions = transactions.filter(t => 
                 t.product && t.product.toString().toLowerCase().includes(searchQuery)
@@ -940,15 +996,38 @@
                         </td>
                     </tr>
                 `);
+                addClass('pagination-controls', 'hidden');
                 if (window.lucide) window.lucide.createIcons();
             } else {
+                removeClass('pagination-controls', 'hidden');
+
+                const totalPages = Math.ceil(filteredTransactions.length / itemsPerPage);
+                if (currentPage > totalPages) currentPage = totalPages;
+                if (currentPage < 1) currentPage = 1;
+
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = Math.min(startIndex + itemsPerPage, filteredTransactions.length);
+                const paginatedTransactions = filteredTransactions.slice(startIndex, endIndex);
+
+                setText('pagination-info', `Menampilkan ${startIndex + 1}-${endIndex} dari ${filteredTransactions.length} data`);
+                
+                const btnPrev = document.getElementById('btn-prev-page');
+                if (btnPrev) btnPrev.disabled = currentPage === 1;
+                
+                const btnNext = document.getElementById('btn-next-page');
+                if (btnNext) btnNext.disabled = currentPage === totalPages;
 
                 let htmlContent = '';
-                filteredTransactions.forEach(t => {
+                paginatedTransactions.forEach(t => {
                     const revenue = t.details?.totalPendapatan || t.revenue || 0;
-                    const cost = Math.abs(t.details?.totalBiaya || 0);
+                    const rawCost = Math.abs(t.details?.totalBiaya || 0);
                     const settlement = t.netSettlement || 0;
                     const btnCopyId = `btn-copy-${t.id}`;
+
+                    // Kecualikan Ongkir dan Pemrosesan dari Perhitungan Persen
+                    const excludedCost = Math.abs(t.details?.ongkir || 0) + Math.abs(t.details?.biayaPemrosesan || 0);
+                    const effectiveCost = Math.max(0, rawCost - excludedCost);
+                    const pctStr = formatPercent(effectiveCost, revenue) || '0%';
 
                     htmlContent += `
                         <tr class="hover:bg-gray-50 border-b border-gray-50 transition-colors">
@@ -964,10 +1043,10 @@
                                 </div>
                             </td>
                             <td class="p-4 text-sm text-right font-medium text-gray-800">${formatUang(revenue).replace('-','')}</td>
-                            <td class="p-4 text-sm text-right font-medium text-red-500">-${formatUang(cost).replace('-','')}</td>
+                            <td class="p-4 text-sm text-right font-medium text-red-500">-${formatUang(rawCost).replace('-','')}</td>
                             <td class="p-4 text-center">
-                                <span class="inline-block text-[11px] font-semibold bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full">
-                                    ${formatPercent(cost, revenue)}
+                                <span class="inline-block text-[11px] font-semibold bg-red-50 text-red-600 border border-red-100 px-2 py-0.5 rounded-full" title="Tanpa Ongkir & Pemrosesan">
+                                    ${pctStr}
                                 </span>
                             </td>
                             <td class="p-4 text-sm text-right">
@@ -1119,6 +1198,7 @@
             }
 
             transactions = [...newTx, ...transactions];
+            currentPage = 1;
             renderDashboard();
             renderRiwayat();
             switchTab('riwayat');
